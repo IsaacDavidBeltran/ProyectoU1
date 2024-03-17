@@ -1,17 +1,20 @@
 package Components;
 
 public class Banco extends Registros {
-
+    private String cuentaBancaria;
     private String tarjeta;
-    private String tipo;
+    private String tipoTarjeta;
     private String nip;
     private String cve;
     private String vencimiento;
 
-    public Banco(String cuenta, String usuario, String contraseña, String correo, String url, String tipo, String tarjeta, String nip, String cve, String vencimiento) {
-        super(cuenta, usuario, contraseña, correo, url, tipo);
+    public Banco(String tipoCuenta, String cuenta, String usuario, String correo,
+            String password, String url, String cuentaBancaria, String tarjeta, String tipoTarjeta, String nip,
+            String cve, String vencimiento) {
+        super(tipoCuenta, cuenta, usuario, correo, password, url);
+        this.cuentaBancaria = cuentaBancaria;
         this.tarjeta = tarjeta;
-        this.tipo = tipo;
+        this.tipoTarjeta = tipoTarjeta;
         this.nip = nip;
         this.cve = cve;
         this.vencimiento = vencimiento;
@@ -19,11 +22,21 @@ public class Banco extends Registros {
 
     public void mostrarInfo() {
         super.mostrarInfo();
+        System.out.println("Cuenta Bancaria " + this.cuentaBancaria);
         System.out.println("Tarjeta: " + this.tarjeta);
-        System.out.println("Tipo: " + this.tipo);
+        System.out.println("Tipo Tarjeta: " + this.tipoTarjeta);
         System.out.println("NIP: " + this.nip);
         System.out.println("CVE: " + this.cve);
         System.out.println("Vencimiento: " + this.vencimiento);
+        System.out.println("-----------------------------");
+    }
+
+    public String getCuentaBancaria() {
+        return cuentaBancaria;
+    }
+
+    public void setCuentaBancaria(String cuentaBancaria) {
+        this.cuentaBancaria = cuentaBancaria;
     }
 
     public String getTarjeta() {
@@ -34,12 +47,12 @@ public class Banco extends Registros {
         this.tarjeta = tarjeta;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getTipoTarjeta() {
+        return tipoTarjeta;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoTarjeta(String tipo) {
+        this.tipoTarjeta = tipo;
     }
 
     public String getNip() {
@@ -58,4 +71,3 @@ public class Banco extends Registros {
         this.cve = cve;
     }
 }
-

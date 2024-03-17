@@ -1,30 +1,31 @@
 package Components;
 
 public class Registros {
-
+	private String tipoCuenta;
 	private String cuenta;
 	private String usuario;
-	private String contraseña;
+	private String password;
 	private String correo;
 	private String url;
-	private String tipo;
 
-	public Registros(String cuenta, String usuario, String contraseña, String correo, String url, String tipo) {
+	public Registros(String tipoCuenta, String cuenta, String usuario, String correo, String password, String url) {
+		this.tipoCuenta = tipoCuenta;
 		this.cuenta = cuenta;
 		this.usuario = usuario;
-		this.contraseña = contraseña;
 		this.correo = correo;
+		this.password = password;
 		this.url = url;
-		this.tipo = tipo;
 	}
 
 	public void mostrarInfo() {
-		System.out.println("Cuenta: " + this.cuenta);
-		System.out.println("Usuario: " + this.usuario);
-		System.out.println("Contraseña: " + this.contraseña);
-		System.out.println("Correo: " + this.correo);
-		System.out.println("URL: " + this.url);
-		System.out.println("Tipo: " + this.tipo);
+	System.out.println("Tipo Cuenta: " + this.tipoCuenta);
+	System.out.println("Cuenta: " + this.cuenta);
+	System.out.println("Usuario: " + this.usuario);
+	System.out.println("Contraseña: " + this.password);
+	System.out.println("Correo: " + this.correo);
+	System.out.println("URL: " + this.url);
+	System.out.println("-----------------------------");
+
 	}
 
 	public String getCuenta() {
@@ -43,12 +44,12 @@ public class Registros {
 		this.usuario = usuario;
 	}
 
-	public String getContraseña() {
-		return contraseña;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+	public void setPassword(String contraseña) {
+		this.password = contraseña;
 	}
 
 	public String getCorreo() {
@@ -67,12 +68,12 @@ public class Registros {
 		this.url = url;
 	}
 
-	public String getTipo() {
-		return tipo;
+	public String getTipoCuenta() {
+		return tipoCuenta;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setTipoCuenta(String tipo) {
+		this.tipoCuenta = tipo;
 	}
 
 }
