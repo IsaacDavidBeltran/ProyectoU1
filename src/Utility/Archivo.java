@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Archivo {
     private ObjectOutputStream archivo;
-    private final String rutaArchivo = "src\\Utility\\archivos";
+    private final String rutaArchivo = "src\\Utility\\registros";
 
     public <T> void guardarArchivo(ArrayList<T> array) {
         try {
