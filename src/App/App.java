@@ -8,6 +8,8 @@ public class App {
 		MainFrame MarcoPrincipal = new MainFrame();
 		MarcoPrincipal.setVisible(true);
 
+		// ELIMINAR DESPUES //
+		MarcoPrincipal.setAlwaysOnTop(true);
 	}
 
 }

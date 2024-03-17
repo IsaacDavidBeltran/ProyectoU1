@@ -17,10 +17,14 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
-import Utility.JPasswordFieldShowHide;
-
 import javax.swing.JFormattedTextField;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
+import Components.Banco;
+import Components.Registros;
+import Components.Servicios;
+import Utility.JPasswordFieldShowHide;
 
 public class MainFrame extends JFrame implements ActionListener, KeyListener {
 
@@ -35,8 +39,12 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 	private JComboBox<String> cmbTipo;
 	private JButton btnAltas, btnBajas, btnCambios, btnConsultas;
 	private JLabel lbCuentaBancaria, lbTarjeta, lbTipoTarjeta, lbNIP, lbCVE, lbVencimiento;
-	private JLabel lbDomicilio, lbDatoEx1,lbDatoEx2;
+	private JLabel lbDomicilio, lbDatoEx1, lbDatoEx2;
 	private SimpleDateFormat formatoFecha = new SimpleDateFormat("MM/YY");
+	private ArrayList<Registros> array = new ArrayList<Registros>();
+
+	// COSAS POR ARREGLAR //
+	// cmbCombo1: siempre muestra "Seleccionar" aunque se escoja otra opcion.
 
 	public MainFrame() {
 		setTitle("Proyecto Unidad 1 y 2");
@@ -124,7 +132,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 1;
 		c.anchor = GridBagConstraints.LINE_START;
-		String[] opciones = { "Seleccionar", "Bancaria", "Servicios", "Pagina web", "App movil", "App Desktop" };
+		String[] opciones = { "Seleccionar", "Bancaria", "Servicios", "Pagina Web", "App Movil", "App Desktop" };
 		cmbCombo1 = new JComboBox<>(opciones);
 		cmbCombo1.addActionListener(this);
 		datos.add(cmbCombo1, c);
@@ -421,12 +429,12 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+
 	}
 
 	@Override
@@ -496,9 +504,77 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 
 		// Altas
 		if (e.getSource() == btnAltas) {
+			String tipoCuenta = null;
+			String cuenta = txtCuenta.getText();
+			String usuario = txtUsuario.getText();
+			String correo = txtCorreo.getText();
+			char[] passwordChars = txtContrasena.getPassword();
+			String password = new String(passwordChars);
+			String url = txtUrl.getText();
+
+			switch (cmbCombo1.getSelectedIndex()) {
+				// Default
+				case 0:
+
+					break;
+				// Bancaria
+				case 1:
+					Banco cuentaBanco;
+
+					tipoCuenta = "Bancaria";
+					String cuentaBancaria = txtCuentaB.getText();
+					String tarjeta = txtTarjeta.getText();
+					String tipoTarjeta = cmbTipo.getSelectedItem().toString();
+					String nip = txtNIP.getText();
+					String cve = txtCVE.getText();
+					String vencimiento = txtVencimiento.getText();
+
+					cuentaBanco = new Banco(tipoCuenta, cuenta, usuario, correo, password, url, cuentaBancaria, tarjeta,
+							tipoTarjeta, nip, cve, vencimiento);
+					array.add(cuentaBanco);
+					break;
+				// Servicios
+				case 2:
+					Servicios servicio;
+
+					tipoCuenta = "Servicio";
+					String domicilio = txtDomicilio.getText();
+					String datoExtra1 = txtDatoEx1.getText();
+					String datoExtra2 = txtDatoEx2.getText();
+
+					servicio = new Servicios(tipoCuenta, cuenta, usuario, correo, password, url, domicilio, datoExtra1,
+							datoExtra2);
+					array.add(servicio);
+					break;
+				// Pagina Web, App Movil, App Desktop
+				case 3:
+
+				case 4:
+				case 5:
+					switch (cmbCombo1.getSelectedIndex()) {
+						case 3:
+							tipoCuenta = "Pagina Web";
+							break;
+						case 4:
+							tipoCuenta = "App Movil";
+							break;
+						case 5:
+							tipoCuenta = "App Desktop";
+							break;
+					}
+					Registros registro = new Registros(tipoCuenta, cuenta, usuario, correo, password, url);
+					array.add(registro);
+					break;
+			}
 			limpiarCampos();
 		}
 
+		// Consultas
+		if (e.getSource() == btnConsultas) {
+			for (Registros r : array) {
+				r.mostrarInfo();
+			}
+		}
 	}
 
 	private void limpiarCampos() {
