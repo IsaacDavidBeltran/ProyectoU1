@@ -1,6 +1,8 @@
 package Components;
 
-public class Registros {
+import java.io.Serializable;
+
+public class Registros implements Serializable{
 	private String tipoCuenta;
 	private String cuenta;
 	private String usuario;
@@ -24,8 +26,6 @@ public class Registros {
 	System.out.println("Contraseña: " + this.password);
 	System.out.println("Correo: " + this.correo);
 	System.out.println("URL: " + this.url);
-	System.out.println("-----------------------------");
-
 	}
 
 	public String getCuenta() {

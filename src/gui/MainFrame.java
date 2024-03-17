@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import Components.Banco;
 import Components.Registros;
 import Components.Servicios;
+import Utility.Archivo;
 import Utility.JPasswordFieldShowHide;
 
 public class MainFrame extends JFrame implements ActionListener, KeyListener {
@@ -42,6 +43,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 	private JLabel lbDomicilio, lbDatoEx1, lbDatoEx2;
 	private SimpleDateFormat formatoFecha = new SimpleDateFormat("MM/YY");
 	private ArrayList<Registros> array = new ArrayList<Registros>();
+	Archivo archivo = new Archivo();
 
 	// COSAS POR ARREGLAR //
 	// cmbCombo1: siempre muestra "Seleccionar" aunque se escoja otra opcion.
@@ -58,6 +60,8 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 	}
 
 	private void InitComponents() {
+		// LEER DATOS DEL ARCHIVO
+		array = archivo.leerArchivo();
 
 		// ZONA CENTRAL
 		datos = new JPanel();
@@ -567,6 +571,9 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 					break;
 			}
 			limpiarCampos();
+
+			// MODIFICAR DESPUES //
+			archivo.guardarArchivo(array);
 		}
 
 		// Consultas

@@ -18,7 +18,6 @@ public class Servicios extends Registros {
         System.out.println("Domicilio: " + this.domicilio);
         System.out.println("Dato Extra 1: " + this.datoExtra1);
         System.out.println("Dato Extra 2: " + this.datoExtra2);
-        System.out.println("-----------------------------");
     }
 
     public String getDomicilio() {

@@ -28,7 +28,6 @@ public class Banco extends Registros {
         System.out.println("NIP: " + this.nip);
         System.out.println("CVE: " + this.cve);
         System.out.println("Vencimiento: " + this.vencimiento);
-        System.out.println("-----------------------------");
     }
 
     public String getCuentaBancaria() {
