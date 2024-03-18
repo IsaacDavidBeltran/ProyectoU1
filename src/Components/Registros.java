@@ -21,7 +21,7 @@ public class Registros implements Serializable{
 
 	public void mostrarInfo() {
 	System.out.println("Tipo Cuenta: " + this.tipoCuenta);
-	System.out.println("Cuenta: " + this.cuenta);
+	System.out.println("Nombre del registro: " + this.cuenta);
 	System.out.println("Usuario: " + this.usuario);
 	System.out.println("Contraseña: " + this.password);
 	System.out.println("Correo: " + this.correo);

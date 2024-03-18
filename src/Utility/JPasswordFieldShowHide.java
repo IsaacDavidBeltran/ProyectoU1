@@ -14,7 +14,7 @@ public class JPasswordFieldShowHide extends JPasswordField {
     public JPasswordFieldShowHide(int columns) {
         super(columns);
         setLayout(new BorderLayout());
-        btnShowHide = new JButton(new ImageIcon("src\\img\\mostrar.png"));
+        btnShowHide = new JButton(new ImageIcon("src\\img\\esconder.png"));
         btnShowHide.setFocusable(false);
         btnShowHide.setBorderPainted(false); // Eliminar el borde del boton.
         btnShowHide.setContentAreaFilled(false); // Hacer transparente el contenido.
@@ -31,11 +31,11 @@ public class JPasswordFieldShowHide extends JPasswordField {
         if (passwordVisible) {
             // Cambia los caracteres introducidos por un '*'
             setEchoChar('*');
-            btnShowHide.setIcon(new ImageIcon("src\\img\\mostrar.png"));
+            btnShowHide.setIcon(new ImageIcon("src\\img\\esconder.png"));
         } else {
             // Permite ver los caracteres del password
             setEchoChar((char) 0);
-            btnShowHide.setIcon(new ImageIcon("src\\img\\esconder.png"));
+            btnShowHide.setIcon(new ImageIcon("src\\img\\mostrar.png"));
         }
         passwordVisible = !passwordVisible;
     }
