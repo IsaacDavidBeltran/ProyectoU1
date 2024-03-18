@@ -69,4 +69,12 @@ public class Banco extends Registros {
     public void setCve(String cve) {
         this.cve = cve;
     }
+
+    public String getVencimiento() {
+        return vencimiento;
+    }
+
+    public void setVencimiento(String vencimiento) {
+        this.vencimiento = vencimiento;
+    }
 }
