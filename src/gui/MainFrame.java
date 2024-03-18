@@ -4,7 +4,6 @@ import java.awt.Insets;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.KeyEvent;
@@ -14,11 +13,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -26,7 +23,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JFormattedTextField;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import Components.Banco;
 import Components.Registros;
@@ -790,7 +786,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 					}
 
 					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla),BorderLayout.CENTER);
+					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
 
 					break;
 				// PAGINA WEB
@@ -824,7 +820,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 						}
 					}
 					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla),BorderLayout.CENTER);
+					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
 
 					break;
 				// APP DESKTOP
@@ -844,8 +840,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
 
 					break;
-				
-			
+
 			}
 		}
 	}
