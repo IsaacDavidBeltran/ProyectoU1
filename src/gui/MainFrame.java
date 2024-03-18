@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JFormattedTextField;
 import java.text.SimpleDateFormat;
@@ -413,7 +414,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		if (e.getSource() == txtCuentaB) {
 			char c = e.getKeyChar();
 			if (Character.isDigit(c)) {
-				if(txtCuentaB.getText().length() > 17) {
+				if (txtCuentaB.getText().length() > 17) {
 					e.consume();
 				}
 			} else {
@@ -633,9 +634,12 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 
 		// Consultas
 		if (e.getSource() == btnConsultas) {
+			GridBagConstraints c;
 			// BOTONES
 			isConsultas = true;
 			btnAltas.setEnabled(true);
+			btnBajas.setEnabled(true);
+			btnCambios.setEnabled(true);
 
 			// REGISTROS
 			lbEncabezado.setVisible(false);
@@ -675,31 +679,27 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 			txtDatoEx1.setVisible(false);
 			txtDatoEx2.setVisible(false);
 
-			btnBajas.setEnabled(true);
-			btnCambios.setEnabled(true);
-
-			GridBagConstraints c = new GridBagConstraints();
+			c = new GridBagConstraints();
 			// Filtro
 			c.gridx = 0;
 			c.gridy = 0;
-			c.gridwidth = 2;
+			c.gridwidth = 1; // Cambiado para que ocupen una sola columna cada uno
 			c.gridheight = 1;
 			c.weightx = 0.0;
 			c.weighty = 0.0;
 			c.fill = GridBagConstraints.NONE;
-			c.anchor = GridBagConstraints.CENTER;
-			c.insets = new Insets(0, 5, 0, 0);
+			c.anchor = GridBagConstraints.LINE_START; // Cambiado para que se alinee a la izquierda
+			c.insets = new Insets(10, 5, 0, 0); // Cambiado para agregar más espacio en el margen superior
 			c.ipadx = 0;
 			c.ipady = 2;
 			lbFiltro = new JLabel("Seleccion: ");
-			datos.add(lbFiltro);
+			datos.add(lbFiltro, c);
 
-			c.gridx = 1;
-			c.gridy = 8;
-			c.anchor = GridBagConstraints.LINE_START;
+			c.gridx = 1; // Cambiado para que cmbFiltro esté en la columna siguiente
+			c.anchor = GridBagConstraints.LINE_END; // Cambiado para que se alinee a la derecha
 			cmbFiltro = new JComboBox<>(opciones);
 			cmbFiltro.addActionListener(this);
-			datos.add(cmbFiltro);
+			datos.add(cmbFiltro, c);
 
 			// Agregar datos al JTable
 			for (Registros r : array) {
@@ -709,20 +709,28 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		}
 
 		if (e.getSource() == cmbFiltro) {
-			// CREAR JTable
+			// Eliminar cualquier componente JScrollPane existente en el contenedor datos
+			datos.removeAll();
+			btnAltas.setEnabled(true);
+			btnBajas.setEnabled(true);
+			btnCambios.setEnabled(true);
+			isConsultas = true;
+		
+			// Configuración de GridBagConstraints para la tabla
 			GridBagConstraints c = new GridBagConstraints();
 			c.gridx = 0;
-			c.gridy = 0;
+			c.gridy = 1; // Colocar la tabla debajo del JLabel y JComboBox
 			c.gridwidth = 2;
 			c.gridheight = 1;
-			c.weightx = 0.0;
-			c.weighty = 0.0;
-			c.fill = GridBagConstraints.NONE;
+			c.weightx = 1.0; // La tabla se extiende horizontalmente
+			c.weighty = 1.0; // La tabla se extiende verticalmente
+			c.fill = GridBagConstraints.BOTH; // La tabla se expande en ambas direcciones
 			c.anchor = GridBagConstraints.CENTER;
-			c.insets = new Insets(0, 5, 0, 0);
+			c.insets = new Insets(10, 5, 0, 0);
 			c.ipadx = 0;
 			c.ipady = 2;
-
+		
+			// Crear modelo de tabla y agregar columnas comunes
 			DefaultTableModel modeloConsultas = new DefaultTableModel();
 			modeloConsultas.addColumn("Tipo de cuenta");
 			modeloConsultas.addColumn("Nombre del registro");
@@ -730,132 +738,118 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 			modeloConsultas.addColumn("Correo");
 			modeloConsultas.addColumn("Contraseña");
 			modeloConsultas.addColumn("URL");
-
-			JTable tabla;
+		
 			switch (cmbFiltro.getSelectedIndex()) {
-				// BANCARIA
-				case 0:
-					// Crear JTable Bancaria
+				case 0: // BANCARIA
 					modeloConsultas.addColumn("Cuenta Bancaria");
 					modeloConsultas.addColumn("Tarjeta");
 					modeloConsultas.addColumn("Tipo Tarjeta");
 					modeloConsultas.addColumn("NIP");
 					modeloConsultas.addColumn("CVE");
 					modeloConsultas.addColumn("VENCIMIENTO");
-
-					ArrayList<Banco> bancos = new ArrayList<Banco>();
-					for (Registros registros : array) {
-						if (registros instanceof Banco) {
-							bancos.add((Banco) registros);
+		
+					for (Registros registro : array) {
+						if (registro instanceof Banco) {
+							Banco banco = (Banco) registro;
+							modeloConsultas.addRow(new Object[]{
+									banco.getCuenta(),
+									banco.getUsuario(),
+									banco.getPassword(),
+									banco.getCorreo(),
+									banco.getUrl(),
+									banco.getCuentaBancaria(),
+									banco.getTarjeta(),
+									banco.getTipoTarjeta(),
+									banco.getNip(),
+									banco.getCve(),
+									banco.getVencimiento()
+							});
 						}
 					}
-
-					for (Banco b : bancos) {
-						modeloConsultas.addRow(new Object[] {
-								b.getCuenta(),
-								b.getUsuario(),
-								b.getPassword(),
-								b.getCorreo(),
-								b.getUrl(),
-
-								b.getCuentaBancaria(),
-								b.getTarjeta(),
-								b.getTipoTarjeta(),
-								b.getNip(),
-								b.getCve(),
-								b.getVencimiento()
-						});
-					}
-					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
 					break;
-				// SERVICIOS
+				// Caso SERVICIOS
 				case 1:
-					// Crear JTable Servicios
+					// Agregar columnas específicas para servicios
 					modeloConsultas.addColumn("Domicilio");
 					modeloConsultas.addColumn("Dato Extra 1");
 					modeloConsultas.addColumn("Dato Extra 2");
-
-					ArrayList<Servicios> servicios = new ArrayList<Servicios>();
-					for (Registros registros : array) {
-						if (registros instanceof Servicios) {
-							servicios.add((Servicios) registros);
+		
+					// Llenar la tabla con datos de servicios
+					for (Registros registro : array) {
+						if (registro instanceof Servicios) {
+							Servicios servicio = (Servicios) registro;
+							modeloConsultas.addRow(new Object[]{
+									servicio.getCuenta(),
+									servicio.getUsuario(),
+									servicio.getPassword(),
+									servicio.getCorreo(),
+									servicio.getUrl(),
+									servicio.getDomicilio(),
+									servicio.getDatoExtra1(),
+									servicio.getDatoExtra2()
+							});
 						}
 					}
-
-					for (Servicios s : servicios) {
-						modeloConsultas.addRow(new Object[] {
-								s.getCuenta(),
-								s.getUsuario(),
-								s.getPassword(),
-								s.getCorreo(),
-								s.getUrl(),
-
-								s.getDomicilio(),
-								s.getDatoExtra1(),
-								s.getDatoExtra2()
-						});
-					}
-
-					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
 					break;
-				// PAGINA WEB
+				// Caso PAGINA WEB
 				case 2:
-					for (Registros w : array) {
-						if (w.getTipoCuenta().equals("Pagina Web")) {
-							modeloConsultas.addRow(new Object[] {
-									w.getCuenta(),
-									w.getUsuario(),
-									w.getPassword(),
-									w.getCorreo(),
-									w.getUrl(),
+					// Llenar la tabla con datos de páginas web
+					for (Registros registro : array) {
+						if (registro.getTipoCuenta().equals("Pagina Web")) {
+							modeloConsultas.addRow(new Object[]{
+									registro.getCuenta(),
+									registro.getUsuario(),
+									registro.getPassword(),
+									registro.getCorreo(),
+									registro.getUrl()
 							});
 						}
 					}
-					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
 					break;
-				// APP MOVIL
+				// Caso APP MOVIL
 				case 3:
-					for (Registros m : array) {
-						if (m.getTipoCuenta().equals("App Movil")) {
-							modeloConsultas.addRow(new Object[] {
-									m.getCuenta(),
-									m.getUsuario(),
-									m.getPassword(),
-									m.getCorreo(),
-									m.getUrl(),
+					// Llenar la tabla con datos de aplicaciones móviles
+					for (Registros registro : array) {
+						if (registro.getTipoCuenta().equals("App Movil")) {
+							modeloConsultas.addRow(new Object[]{
+									registro.getCuenta(),
+									registro.getUsuario(),
+									registro.getPassword(),
+									registro.getCorreo(),
+									registro.getUrl()
 							});
 						}
 					}
-					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
 					break;
-				// APP DESKTOP
+				// Caso APP DESKTOP
 				case 4:
-					for (Registros d : array) {
-						if (d.getTipoCuenta().equals("App Desktop")) {
-							modeloConsultas.addRow(new Object[] {
-									d.getCuenta(),
-									d.getUsuario(),
-									d.getPassword(),
-									d.getCorreo(),
-									d.getUrl(),
+					// Llenar la tabla con datos de aplicaciones de escritorio
+					for (Registros registro : array) {
+						if (registro.getTipoCuenta().equals("App Desktop")) {
+							modeloConsultas.addRow(new Object[]{
+									registro.getCuenta(),
+									registro.getUsuario(),
+									registro.getPassword(),
+									registro.getCorreo(),
+									registro.getUrl()
 							});
 						}
 					}
-					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
 					break;
-
 			}
+		
+			// Crear la tabla con el modelo de datos
+			JTable tabla = new JTable(modeloConsultas);
+		
+			// Agregar la tabla al JScrollPane y luego agregar el JScrollPane al contenedor datos
+			JScrollPane scrollPane = new JScrollPane(tabla);
+			datos.add(scrollPane, c);
+		
+			// Actualizar la interfaz
+			datos.revalidate();
+			datos.repaint();
 		}
+
 	}
 
 	private void limpiarCampos() {
