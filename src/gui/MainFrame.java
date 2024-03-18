@@ -233,6 +233,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.anchor = GridBagConstraints.LINE_START;
 		txtCuentaB = new JTextField();
 		txtCuentaB.setPreferredSize(new Dimension(150, 15));
+		txtCuentaB.addKeyListener(this);
 		datos.add(txtCuentaB, c);
 
 		// Tarjeta
@@ -401,6 +402,18 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 			char c = e.getKeyChar();
 			if (Character.isDigit(c)) {
 				if (txtCVE.getText().length() > 2) {
+					e.consume();
+				}
+			} else {
+				e.consume();
+			}
+		}
+
+		// Cuenta Bancaria
+		if (e.getSource() == txtCuentaB) {
+			char c = e.getKeyChar();
+			if (Character.isDigit(c)) {
+				if(txtCuentaB.getText().length() > 17) {
 					e.consume();
 				}
 			} else {
