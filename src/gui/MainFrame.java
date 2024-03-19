@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -13,13 +14,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JFormattedTextField;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanel datos, cabecera;
+	private JPanel datos, footer;
 	private JComboBox<String> cmbTipoCuenta;
 	private JTextField txtNombreR, txtUsuario, txtCorreo, txtUrl;
 	private JTextField txtCuentaB, txtTarjeta, txtCVE, txtVencimiento;
@@ -45,13 +43,10 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 	private JButton btnAltas, btnBajas, btnCambios, btnConsultas;
 	private JLabel lbCuentaBancaria, lbTarjeta, lbTipoTarjeta, lbNIP, lbCVE, lbVencimiento;
 	private JLabel lbDomicilio, lbDatoEx1, lbDatoEx2;
-	private JLabel lbFiltro;
-	private JComboBox<String> cmbFiltro;
 	private SimpleDateFormat formatoFecha = new SimpleDateFormat("MM/YY");
 	private ArrayList<Registros> array = new ArrayList<Registros>();
 	private String[] opciones = { "Seleccionar", "Bancaria", "Servicios", "Pagina Web", "App Movil", "App Desktop" };
 
-	private boolean isConsultas = false;
 	Archivo archivo = new Archivo();
 
 	// COSAS POR ARREGLAR //
@@ -61,11 +56,15 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		setTitle("Proyecto Unidad 1 y 2");
 		setIconImage(new ImageIcon("src\\img\\logoTec.png").getImage());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		// setSize(700, 700);
 		setMinimumSize(new Dimension(500, 500));
 		setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
 		InitComponents();
+	}
+
+	public MainFrame(Point location) {
+		this();
+		setLocation(location);
 	}
 
 	private void InitComponents() {
@@ -78,36 +77,36 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		add(datos, BorderLayout.CENTER);
 
 		// ZONA SUR
-		cabecera = new JPanel();
+		footer = new JPanel();
 		opciones();
-		add(cabecera, BorderLayout.SOUTH);
+		add(footer, BorderLayout.SOUTH);
 
 	}
 
 	private void opciones() {
-		cabecera.setLayout(new FlowLayout());
+		footer.setLayout(new FlowLayout());
 		btnAltas = new JButton("Altas");
 		btnAltas.setPreferredSize(new Dimension(80, 30));
 		btnAltas.addActionListener(this);
 		btnAltas.setEnabled(false);
-		cabecera.add(btnAltas);
+		footer.add(btnAltas);
 
 		btnBajas = new JButton("Bajas");
 		btnBajas.setPreferredSize(new Dimension(80, 30));
 		btnBajas.addActionListener(this);
 		btnBajas.setEnabled(false);
-		cabecera.add(btnBajas);
+		footer.add(btnBajas);
 
 		btnCambios = new JButton("Cambios");
 		btnCambios.setPreferredSize(new Dimension(90, 30));
 		btnCambios.addActionListener(this);
 		btnCambios.setEnabled(false);
-		cabecera.add(btnCambios);
+		footer.add(btnCambios);
 
 		btnConsultas = new JButton("Consultas");
 		btnConsultas.setPreferredSize(new Dimension(100, 30));
 		btnConsultas.addActionListener(this);
-		cabecera.add(btnConsultas);
+		footer.add(btnConsultas);
 	}
 
 	public void menu() {
@@ -159,7 +158,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 2;
 		c.anchor = GridBagConstraints.LINE_START;
-		txtNombreR = new JTextField();
+		txtNombreR = new JTextField("");
 		txtNombreR.setPreferredSize(new Dimension(150, 15));
 		txtNombreR.addKeyListener(this);
 		datos.add(txtNombreR, c);
@@ -174,7 +173,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 3;
 		c.anchor = GridBagConstraints.LINE_START;
-		txtUsuario = new JTextField();
+		txtUsuario = new JTextField("");
 		txtUsuario.setPreferredSize(new Dimension(150, 15));
 		datos.add(txtUsuario, c);
 
@@ -188,7 +187,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 4;
 		c.anchor = GridBagConstraints.LINE_START;
-		txtCorreo = new JTextField();
+		txtCorreo = new JTextField("");
 		txtCorreo.setPreferredSize(new Dimension(150, 15));
 		datos.add(txtCorreo, c);
 
@@ -216,7 +215,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 6;
 		c.anchor = GridBagConstraints.LINE_START;
-		txtUrl = new JTextField();
+		txtUrl = new JTextField("");
 		txtUrl.setPreferredSize(new Dimension(150, 15));
 		datos.add(txtUrl, c);
 
@@ -231,7 +230,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 7;
 		c.anchor = GridBagConstraints.LINE_START;
-		txtCuentaB = new JTextField();
+		txtCuentaB = new JTextField("");
 		txtCuentaB.setPreferredSize(new Dimension(150, 15));
 		txtCuentaB.addKeyListener(this);
 		datos.add(txtCuentaB, c);
@@ -246,7 +245,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 8;
 		c.anchor = GridBagConstraints.LINE_START;
-		txtTarjeta = new JTextField();
+		txtTarjeta = new JTextField("");
 		txtTarjeta.setPreferredSize(new Dimension(150, 15));
 		txtTarjeta.addKeyListener(this);
 		datos.add(txtTarjeta, c);
@@ -290,7 +289,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 11;
 		c.anchor = GridBagConstraints.LINE_START;
-		txtCVE = new JTextField();
+		txtCVE = new JTextField("");
 		txtCVE.setPreferredSize(new Dimension(150, 15));
 		txtCVE.addKeyListener(this);
 		datos.add(txtCVE, c);
@@ -309,22 +308,10 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		txtVencimiento = new JFormattedTextField(formatoFecha);
 		txtVencimiento.addKeyListener(this);
 
-		// Ocultar los campos de Cuentas Bancarias
 		txtVencimiento.setPreferredSize(new Dimension(150, 15));
 		datos.add(txtVencimiento, c);
-		txtCuentaB.setVisible(false);
-		txtTarjeta.setVisible(false);
-		cmbTipoTarjeta.setVisible(false);
-		txtNIP.setVisible(false);
-		txtCVE.setVisible(false);
-		txtVencimiento.setVisible(false);
-		lbCuentaBancaria.setVisible(false);
-		lbTarjeta.setVisible(false);
-		lbTipoTarjeta.setVisible(false);
-		lbNIP.setVisible(false);
-		lbCVE.setVisible(false);
-		lbVencimiento.setVisible(false);
-
+		// Ocultar los campos de Cuentas Bancarias
+		OcultarB();
 		// Campos de cuentas de servicio
 		// Domicilio
 		c.gridx = 0;
@@ -336,7 +323,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 7;
 		c.anchor = GridBagConstraints.LINE_START;
-		txtDomicilio = new JTextField();
+		txtDomicilio = new JTextField("");
 		txtDomicilio.setPreferredSize(new Dimension(150, 15));
 		datos.add(txtDomicilio, c);
 
@@ -350,7 +337,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 8;
 		c.anchor = GridBagConstraints.LINE_START;
-		txtDatoEx1 = new JTextField();
+		txtDatoEx1 = new JTextField("");
 		txtDatoEx1.setPreferredSize(new Dimension(150, 15));
 		datos.add(txtDatoEx1, c);
 
@@ -364,18 +351,9 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		c.gridx = 1;
 		c.gridy = 9;
 		c.anchor = GridBagConstraints.LINE_START;
-		txtDatoEx2 = new JTextField();
+		txtDatoEx2 = new JTextField("");
 		txtDatoEx2.setPreferredSize(new Dimension(150, 15));
 		datos.add(txtDatoEx2, c);
-
-		// Ocultar los campos de las cuentas de servicio
-		lbDomicilio.setVisible(false);
-		lbDatoEx1.setVisible(false);
-		lbDatoEx2.setVisible(false);
-		txtDomicilio.setVisible(false);
-		txtDatoEx1.setVisible(false);
-		txtDatoEx2.setVisible(false);
-
 	}
 
 	@Override
@@ -413,7 +391,7 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		if (e.getSource() == txtCuentaB) {
 			char c = e.getKeyChar();
 			if (Character.isDigit(c)) {
-				if(txtCuentaB.getText().length() > 17) {
+				if (txtCuentaB.getText().length() > 17) {
 					e.consume();
 				}
 			} else {
@@ -524,101 +502,72 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 				txtDatoEx1.setVisible(false);
 				txtDatoEx2.setVisible(false);
 			}
-
 		}
 
 		// Altas
 		if (e.getSource() == btnAltas) {
-			if (isConsultas) {
-				lbEncabezado.setVisible(true);
-				txtNombreR.setVisible(true);
-				lbTipoCuenta.setVisible(true);
-				cmbTipoCuenta.setVisible(true);
-				lbNombreR.setVisible(true);
-				txtNombreR.setVisible(true);
-				lbUsuario.setVisible(true);
-				txtUsuario.setVisible(true);
-				lbCorreo.setVisible(true);
-				txtCorreo.setVisible(true);
-				lbContrasena.setVisible(true);
-				txtContrasena.setVisible(true);
-				lbURL.setVisible(true);
-				txtUrl.setVisible(true);
-				lbFiltro.setVisible(false);
-				cmbFiltro.setVisible(false);
+			String tipoCuenta = null;
+			String cuenta = txtNombreR.getText();
+			String usuario = txtUsuario.getText();
+			String correo = txtCorreo.getText();
+			char[] passwordChars = txtContrasena.getPassword();
+			String password = new String(passwordChars);
+			String url = txtUrl.getText();
 
-				isConsultas = false;
-			} else {
-				String tipoCuenta = null;
-				String cuenta = txtNombreR.getText();
-				String usuario = txtUsuario.getText();
-				String correo = txtCorreo.getText();
-				char[] passwordChars = txtContrasena.getPassword();
-				String password = new String(passwordChars);
-				String url = txtUrl.getText();
+			switch (cmbTipoCuenta.getSelectedIndex()) {
+				// Bancaria
+				case 1:
+					Banco cuentaBanco;
 
-				switch (cmbTipoCuenta.getSelectedIndex()) {
-					// Default
-					case 0:
+					tipoCuenta = "Bancaria";
+					String cuentaBancaria = txtCuentaB.getText();
+					String tarjeta = txtTarjeta.getText();
+					String tipoTarjeta = cmbTipoTarjeta.getSelectedItem().toString();
+					char[] nipChars = txtNIP.getPassword();
+					String nip = new String(nipChars);
+					String cve = txtCVE.getText();
+					String vencimiento = txtVencimiento.getText();
 
-						break;
-					// Bancaria
-					case 1:
-						Banco cuentaBanco;
+					cuentaBanco = new Banco(tipoCuenta, cuenta, usuario, correo, password, url, cuentaBancaria,
+							tarjeta,
+							tipoTarjeta, nip, cve, vencimiento);
+					array.add(cuentaBanco);
+					break;
+				// Servicios
+				case 2:
+					Servicios servicio;
 
-						tipoCuenta = "Bancaria";
-						String cuentaBancaria = txtCuentaB.getText();
-						String tarjeta = txtTarjeta.getText();
-						String tipoTarjeta = cmbTipoTarjeta.getSelectedItem().toString();
-						char[] nipChars = txtNIP.getPassword();
-						String nip = new String(nipChars);
-						String cve = txtCVE.getText();
-						String vencimiento = txtVencimiento.getText();
+					tipoCuenta = "Servicio";
+					String domicilio = txtDomicilio.getText();
+					String datoExtra1 = txtDatoEx1.getText();
+					String datoExtra2 = txtDatoEx2.getText();
 
-						cuentaBanco = new Banco(tipoCuenta, cuenta, usuario, correo, password, url, cuentaBancaria,
-								tarjeta,
-								tipoTarjeta, nip, cve, vencimiento);
-						array.add(cuentaBanco);
-						break;
-					// Servicios
-					case 2:
-						Servicios servicio;
-
-						tipoCuenta = "Servicio";
-						String domicilio = txtDomicilio.getText();
-						String datoExtra1 = txtDatoEx1.getText();
-						String datoExtra2 = txtDatoEx2.getText();
-
-						servicio = new Servicios(tipoCuenta, cuenta, usuario, correo, password, url, domicilio,
-								datoExtra1,
-								datoExtra2);
-						array.add(servicio);
-						break;
-					// Pagina Web, App Movil, App Desktop
-					case 3:
-
-					case 4:
-					case 5:
-						switch (cmbTipoCuenta.getSelectedIndex()) {
-							case 3:
-								tipoCuenta = "Pagina Web";
-								break;
-							case 4:
-								tipoCuenta = "App Movil";
-								break;
-							case 5:
-								tipoCuenta = "App Desktop";
-								break;
-						}
-						Registros registro = new Registros(tipoCuenta, cuenta, usuario, correo, password, url);
-						array.add(registro);
-						break;
-				}
-				limpiarCampos();
-
-				// MODIFICAR DESPUES //
-				archivo.guardarArchivo(array);
+					servicio = new Servicios(tipoCuenta, cuenta, usuario, correo, password, url, domicilio,
+							datoExtra1,
+							datoExtra2);
+					array.add(servicio);
+					break;
+				// Pagina Web, App Movil, App Desktop
+				case 3:
+				case 4:
+				case 5:
+					switch (cmbTipoCuenta.getSelectedIndex()) {
+						case 3:
+							tipoCuenta = "Pagina Web";
+							break;
+						case 4:
+							tipoCuenta = "App Movil";
+							break;
+						case 5:
+							tipoCuenta = "App Desktop";
+							break;
+					}
+					Registros registro = new Registros(tipoCuenta, cuenta, usuario, correo, password, url);
+					array.add(registro);
+					break;
 			}
+			limpiarCampos();
+			archivo.guardarArchivo(array);
 		}
 
 		// Bajas
@@ -633,229 +582,34 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 
 		// Consultas
 		if (e.getSource() == btnConsultas) {
-			// BOTONES
-			isConsultas = true;
-			btnAltas.setEnabled(true);
-
-			// REGISTROS
-			lbEncabezado.setVisible(false);
-			txtNombreR.setVisible(false);
-			lbTipoCuenta.setVisible(false);
-			cmbTipoCuenta.setVisible(false);
-			lbNombreR.setVisible(false);
-			txtNombreR.setVisible(false);
-			lbUsuario.setVisible(false);
-			txtUsuario.setVisible(false);
-			lbCorreo.setVisible(false);
-			txtCorreo.setVisible(false);
-			lbContrasena.setVisible(false);
-			txtContrasena.setVisible(false);
-			lbURL.setVisible(false);
-			txtUrl.setVisible(false);
-
-			// BANCO
-			txtCuentaB.setVisible(false);
-			txtTarjeta.setVisible(false);
-			cmbTipoTarjeta.setVisible(false);
-			txtNIP.setVisible(false);
-			txtCVE.setVisible(false);
-			txtVencimiento.setVisible(false);
-			lbCuentaBancaria.setVisible(false);
-			lbTarjeta.setVisible(false);
-			lbTipoTarjeta.setVisible(false);
-			lbNIP.setVisible(false);
-			lbCVE.setVisible(false);
-			lbVencimiento.setVisible(false);
-
-			// SERVICIOS
-			lbDomicilio.setVisible(false);
-			lbDatoEx1.setVisible(false);
-			lbDatoEx2.setVisible(false);
-			txtDomicilio.setVisible(false);
-			txtDatoEx1.setVisible(false);
-			txtDatoEx2.setVisible(false);
-
-			btnBajas.setEnabled(true);
-			btnCambios.setEnabled(true);
-
-			GridBagConstraints c = new GridBagConstraints();
-			// Filtro
-			c.gridx = 0;
-			c.gridy = 0;
-			c.gridwidth = 2;
-			c.gridheight = 1;
-			c.weightx = 0.0;
-			c.weighty = 0.0;
-			c.fill = GridBagConstraints.NONE;
-			c.anchor = GridBagConstraints.CENTER;
-			c.insets = new Insets(0, 5, 0, 0);
-			c.ipadx = 0;
-			c.ipady = 2;
-			lbFiltro = new JLabel("Seleccion: ");
-			datos.add(lbFiltro);
-
-			c.gridx = 1;
-			c.gridy = 8;
-			c.anchor = GridBagConstraints.LINE_START;
-			cmbFiltro = new JComboBox<>(opciones);
-			cmbFiltro.addActionListener(this);
-			datos.add(cmbFiltro);
-
-			// Agregar datos al JTable
-			for (Registros r : array) {
-				r.mostrarInfo();
-
-			}
+			TableFrame consultasFrame = new TableFrame(getLocation());
+			consultasFrame.setVisible(true);
+			this.dispose();
 		}
+	}
 
-		if (e.getSource() == cmbFiltro) {
-			// CREAR JTable
-			GridBagConstraints c = new GridBagConstraints();
-			c.gridx = 0;
-			c.gridy = 0;
-			c.gridwidth = 2;
-			c.gridheight = 1;
-			c.weightx = 0.0;
-			c.weighty = 0.0;
-			c.fill = GridBagConstraints.NONE;
-			c.anchor = GridBagConstraints.CENTER;
-			c.insets = new Insets(0, 5, 0, 0);
-			c.ipadx = 0;
-			c.ipady = 2;
+	public void OcultarB() {
+		txtCuentaB.setVisible(false);
+		txtTarjeta.setVisible(false);
+		cmbTipoTarjeta.setVisible(false);
+		txtNIP.setVisible(false);
+		txtCVE.setVisible(false);
+		txtVencimiento.setVisible(false);
+		lbCuentaBancaria.setVisible(false);
+		lbTarjeta.setVisible(false);
+		lbTipoTarjeta.setVisible(false);
+		lbNIP.setVisible(false);
+		lbCVE.setVisible(false);
+		lbVencimiento.setVisible(false);
+	}
 
-			DefaultTableModel modeloConsultas = new DefaultTableModel();
-			modeloConsultas.addColumn("Tipo de cuenta");
-			modeloConsultas.addColumn("Nombre del registro");
-			modeloConsultas.addColumn("Usuario");
-			modeloConsultas.addColumn("Correo");
-			modeloConsultas.addColumn("Contraseña");
-			modeloConsultas.addColumn("URL");
-
-			JTable tabla;
-			switch (cmbFiltro.getSelectedIndex()) {
-				// BANCARIA
-				case 0:
-					// Crear JTable Bancaria
-					modeloConsultas.addColumn("Cuenta Bancaria");
-					modeloConsultas.addColumn("Tarjeta");
-					modeloConsultas.addColumn("Tipo Tarjeta");
-					modeloConsultas.addColumn("NIP");
-					modeloConsultas.addColumn("CVE");
-					modeloConsultas.addColumn("VENCIMIENTO");
-
-					ArrayList<Banco> bancos = new ArrayList<Banco>();
-					for (Registros registros : array) {
-						if (registros instanceof Banco) {
-							bancos.add((Banco) registros);
-						}
-					}
-
-					for (Banco b : bancos) {
-						modeloConsultas.addRow(new Object[] {
-								b.getCuenta(),
-								b.getUsuario(),
-								b.getPassword(),
-								b.getCorreo(),
-								b.getUrl(),
-
-								b.getCuentaBancaria(),
-								b.getTarjeta(),
-								b.getTipoTarjeta(),
-								b.getNip(),
-								b.getCve(),
-								b.getVencimiento()
-						});
-					}
-					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
-					break;
-				// SERVICIOS
-				case 1:
-					// Crear JTable Servicios
-					modeloConsultas.addColumn("Domicilio");
-					modeloConsultas.addColumn("Dato Extra 1");
-					modeloConsultas.addColumn("Dato Extra 2");
-
-					ArrayList<Servicios> servicios = new ArrayList<Servicios>();
-					for (Registros registros : array) {
-						if (registros instanceof Servicios) {
-							servicios.add((Servicios) registros);
-						}
-					}
-
-					for (Servicios s : servicios) {
-						modeloConsultas.addRow(new Object[] {
-								s.getCuenta(),
-								s.getUsuario(),
-								s.getPassword(),
-								s.getCorreo(),
-								s.getUrl(),
-
-								s.getDomicilio(),
-								s.getDatoExtra1(),
-								s.getDatoExtra2()
-						});
-					}
-
-					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
-					break;
-				// PAGINA WEB
-				case 2:
-					for (Registros w : array) {
-						if (w.getTipoCuenta().equals("Pagina Web")) {
-							modeloConsultas.addRow(new Object[] {
-									w.getCuenta(),
-									w.getUsuario(),
-									w.getPassword(),
-									w.getCorreo(),
-									w.getUrl(),
-							});
-						}
-					}
-					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
-					break;
-				// APP MOVIL
-				case 3:
-					for (Registros m : array) {
-						if (m.getTipoCuenta().equals("App Movil")) {
-							modeloConsultas.addRow(new Object[] {
-									m.getCuenta(),
-									m.getUsuario(),
-									m.getPassword(),
-									m.getCorreo(),
-									m.getUrl(),
-							});
-						}
-					}
-					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
-					break;
-				// APP DESKTOP
-				case 4:
-					for (Registros d : array) {
-						if (d.getTipoCuenta().equals("App Desktop")) {
-							modeloConsultas.addRow(new Object[] {
-									d.getCuenta(),
-									d.getUsuario(),
-									d.getPassword(),
-									d.getCorreo(),
-									d.getUrl(),
-							});
-						}
-					}
-					tabla = new JTable(modeloConsultas);
-					datos.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
-					break;
-
-			}
-		}
+	public void ocultarS() {
+		lbDomicilio.setVisible(false);
+		lbDatoEx1.setVisible(false);
+		lbDatoEx2.setVisible(false);
+		txtDomicilio.setVisible(false);
+		txtDatoEx1.setVisible(false);
+		txtDatoEx2.setVisible(false);
 	}
 
 	private void limpiarCampos() {
