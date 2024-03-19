@@ -1,26 +1,25 @@
 package gui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.awt.FlowLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Point;
-
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-import javax.swing.JScrollPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.GridBagLayout;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import Components.Banco;
 import Components.Registros;
@@ -28,7 +27,6 @@ import Components.Servicios;
 import Utility.Archivo;
 
 public class TableFrame extends JFrame implements ActionListener {
-	
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Registros> array = new ArrayList<>();
 	private JPanel datos, foot;
@@ -84,7 +82,7 @@ public class TableFrame extends JFrame implements ActionListener {
 		lbFiltro = new JLabel("Seleccion: ");
 		datos.add(lbFiltro, c);
 
-		c.ipadx = 10;
+		c.ipadx = 2;
 		c.ipady = 2;
 		c.anchor = GridBagConstraints.LINE_START;
 		cmbFiltro = new JComboBox<>(opciones);
@@ -129,14 +127,17 @@ public class TableFrame extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnBajas) {
 
-			//int selectedRowIndex = tabla.getSelectedRow();
+			int selectedRowIndex = tabla.getSelectedRow();
 
-			if (tabla.getSelectedRow() != -1) { 
-				array.remove(tabla.getSelectedRow());
+			if (selectedRowIndex != -1) {
+				array.remove(selectedRowIndex);
 				archivo.guardarArchivo(array);
 				actualizarTabla();
 			}
 
+			// archivo.guardarArchivo(array);
+			// datos.revalidate();
+			// datos.repaint();
 		}
 
 		if (e.getSource() == btnCambios) {
@@ -148,13 +149,13 @@ public class TableFrame extends JFrame implements ActionListener {
 		if (e.getSource() == cmbFiltro) {
 			if (tabla != null) {
 				datos.remove(tabla.getParent());
-				datos.remove(tabla);		
+				datos.remove(tabla);
 				tabla = new JTable();
 				modeloConsultas = new DefaultTableModel();
-				
-				//modeloConsultas.setRowCount(0);
+				datos.revalidate();
+				datos.repaint();
+				// modeloConsultas.setRowCount(0);
 			}
-
 			tabla = new JTable();
 			modeloConsultas = new DefaultTableModel();
 			int selectedIndex = cmbFiltro.getSelectedIndex();
@@ -298,7 +299,7 @@ public class TableFrame extends JFrame implements ActionListener {
 
 			// Crear la tabla con el modelo de datos
 			tabla = new JTable(modeloConsultas);
-
+			// tabla.setEditable(false);
 			// Agregar la tabla al JScrollPane y luego agregar el JScrollPane al contenedor
 			// datos
 
@@ -312,121 +313,128 @@ public class TableFrame extends JFrame implements ActionListener {
 		}
 	}
 
-	public void actualizarTabla(){
-		modeloConsultas.setRowCount(0); // Limpiar todos los datos de la tabla
-    	cmbFiltro.getSelectedIndex();
+	private void actualizarTabla() {
+		modeloConsultas.setRowCount(0);
+		int selectedIndex = cmbFiltro.getSelectedIndex();
 
-		switch (cmbFiltro.getSelectedIndex()) {
-				case 1: // BANCARIA
-					btnBajas.setEnabled(true);
-					modeloConsultas.addColumn("Cuenta Bancaria");
-					modeloConsultas.addColumn("Tarjeta");
-					modeloConsultas.addColumn("Tipo Tarjeta");
-					modeloConsultas.addColumn("NIP");
-					modeloConsultas.addColumn("CVE");
-					modeloConsultas.addColumn("VENCIMIENTO");
+		modeloConsultas.addColumn("Tipo de cuenta");
+		modeloConsultas.addColumn("Nombre del registro");
+		modeloConsultas.addColumn("Usuario");
+		modeloConsultas.addColumn("Correo");
+		modeloConsultas.addColumn("Contraseña");
+		modeloConsultas.addColumn("URL");
+		switch (selectedIndex) {
+			case 1: // BANCARIA
+				btnBajas.setEnabled(true);
 
-					for (Registros registro : array) {
-						if (registro instanceof Banco) {
-							Banco banco = (Banco) registro;
-							modeloConsultas.addRow(new Object[] {
-									banco.getTipoCuenta(),
-									banco.getCuenta(),
-									banco.getUsuario(),
-									banco.getPassword(),
-									banco.getCorreo(),
-									banco.getUrl(),
-									banco.getCuentaBancaria(),
-									banco.getTarjeta(),
-									banco.getTipoTarjeta(),
-									banco.getNip(),
-									banco.getCve(),
-									banco.getVencimiento()
-							});
-						}
-					}
-					break;
-				// Caso SERVICIOS
-				case 2:
-					// Agregar columnas específicas para servicios
-					btnBajas.setEnabled(true);
-					modeloConsultas.addColumn("Domicilio");
-					modeloConsultas.addColumn("Dato Extra 1");
-					modeloConsultas.addColumn("Dato Extra 2");
+				modeloConsultas.addColumn("Cuenta Bancaria");
+				modeloConsultas.addColumn("Tarjeta");
+				modeloConsultas.addColumn("Tipo Tarjeta");
+				modeloConsultas.addColumn("NIP");
+				modeloConsultas.addColumn("CVE");
+				modeloConsultas.addColumn("VENCIMIENTO");
 
-					// Llenar la tabla con datos de servicios
-					for (Registros registro : array) {
-						if (registro instanceof Servicios) {
-							Servicios servicio = (Servicios) registro;
-							modeloConsultas.addRow(new Object[] {
-									servicio.getTipoCuenta(),
-									servicio.getCuenta(),
-									servicio.getUsuario(),
-									servicio.getPassword(),
-									servicio.getCorreo(),
-									servicio.getUrl(),
-									servicio.getDomicilio(),
-									servicio.getDatoExtra1(),
-									servicio.getDatoExtra2()
-							});
-						}
+				for (Registros registro : array) {
+					if (registro instanceof Banco) {
+						Banco banco = (Banco) registro;
+						modeloConsultas.addRow(new Object[] {
+								banco.getTipoCuenta(),
+								banco.getCuenta(),
+								banco.getUsuario(),
+								banco.getPassword(),
+								banco.getCorreo(),
+								banco.getUrl(),
+								banco.getCuentaBancaria(),
+								banco.getTarjeta(),
+								banco.getTipoTarjeta(),
+								banco.getNip(),
+								banco.getCve(),
+								banco.getVencimiento()
+						});
 					}
-					break;
-				// Caso PAGINA WEB
-				case 3:
-					// Llenar la tabla con datos de páginas web
-					btnBajas.setEnabled(true);
-					for (Registros registro : array) {
-						if (registro.getTipoCuenta().equals("Pagina Web")) {
-							modeloConsultas.addRow(new Object[] {
-									registro.getTipoCuenta(),
-									registro.getCuenta(),
-									registro.getUsuario(),
-									registro.getPassword(),
-									registro.getCorreo(),
-									registro.getUrl()
-							});
-						}
-					}
-					break;
-				// Caso APP MOVIL
-				case 4:
-					// Llenar la tabla con datos de aplicaciones móviles
-					btnBajas.setEnabled(true);
-					for (Registros registro : array) {
-						if (registro.getTipoCuenta().equals("App Movil")) {
-							modeloConsultas.addRow(new Object[] {
-									registro.getTipoCuenta(),
-									registro.getCuenta(),
-									registro.getUsuario(),
-									registro.getPassword(),
-									registro.getCorreo(),
-									registro.getUrl()
-							});
-						}
-					}
-					break;
-				// Caso APP DESKTOP
-				case 5:
-					// Llenar la tabla con datos de aplicaciones de escritorio
-					btnBajas.setEnabled(true);
-					for (Registros registro : array) {
-						if (registro.getTipoCuenta().equals("App Desktop")) {
-							modeloConsultas.addRow(new Object[] {
-									registro.getTipoCuenta(),
-									registro.getCuenta(),
-									registro.getUsuario(),
-									registro.getPassword(),
-									registro.getCorreo(),
-									registro.getUrl()
-							});
-						}
-					}
-					break;
-			}
+				}
+				break;
+			// Caso SERVICIOS
+			case 2:
+				// Agregar columnas específicas para servicios
+				btnBajas.setEnabled(true);
+				modeloConsultas.addColumn("Domicilio");
+				modeloConsultas.addColumn("Dato Extra 1");
+				modeloConsultas.addColumn("Dato Extra 2");
 
+				// Llenar la tabla con datos de servicios
+				for (Registros registro : array) {
+					if (registro instanceof Servicios) {
+						Servicios servicio = (Servicios) registro;
+						modeloConsultas.addRow(new Object[] {
+								servicio.getTipoCuenta(),
+								servicio.getCuenta(),
+								servicio.getUsuario(),
+								servicio.getPassword(),
+								servicio.getCorreo(),
+								servicio.getUrl(),
+								servicio.getDomicilio(),
+								servicio.getDatoExtra1(),
+								servicio.getDatoExtra2()
+						});
+					}
+				}
+				break;
+			// Caso PAGINA WEB
+			case 3:
+				// Llenar la tabla con datos de páginas web
+				btnBajas.setEnabled(true);
+				for (Registros registro : array) {
+					if (registro.getTipoCuenta().equals("Pagina Web")) {
+						modeloConsultas.addRow(new Object[] {
+								registro.getTipoCuenta(),
+								registro.getCuenta(),
+								registro.getUsuario(),
+								registro.getPassword(),
+								registro.getCorreo(),
+								registro.getUrl()
+						});
+					}
+				}
+				break;
+			// Caso APP MOVIL
+			case 4:
+				// Llenar la tabla con datos de aplicaciones móviles
+				btnBajas.setEnabled(true);
+				for (Registros registro : array) {
+					if (registro.getTipoCuenta().equals("App Movil")) {
+						modeloConsultas.addRow(new Object[] {
+								registro.getTipoCuenta(),
+								registro.getCuenta(),
+								registro.getUsuario(),
+								registro.getPassword(),
+								registro.getCorreo(),
+								registro.getUrl()
+						});
+					}
+				}
+				break;
+			// Caso APP DESKTOP
+			case 5:
+				// Llenar la tabla con datos de aplicaciones de escritorio
+				btnBajas.setEnabled(true);
+				for (Registros registro : array) {
+					if (registro.getTipoCuenta().equals("App Desktop")) {
+						modeloConsultas.addRow(new Object[] {
+								registro.getTipoCuenta(),
+								registro.getCuenta(),
+								registro.getUsuario(),
+								registro.getPassword(),
+								registro.getCorreo(),
+								registro.getUrl()
+						});
+					}
+				}
+				break;
+		}
 		tabla.setModel(modeloConsultas);
 		datos.revalidate();
-    	datos.repaint();
+		datos.repaint();
 	}
+
 }

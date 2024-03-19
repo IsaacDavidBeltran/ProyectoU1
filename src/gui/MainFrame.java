@@ -354,6 +354,8 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		txtDatoEx2 = new JTextField("");
 		txtDatoEx2.setPreferredSize(new Dimension(150, 15));
 		datos.add(txtDatoEx2, c);
+		
+		ocultarS();
 	}
 
 	@Override
