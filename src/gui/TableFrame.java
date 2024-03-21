@@ -83,8 +83,6 @@ public class TableFrame extends JFrame implements ActionListener {
 		c.ipadx = 0;
 		c.ipady = 2;
 		c.anchor = GridBagConstraints.LINE_END;
-		lbFiltro = new JLabel("Seleccion: ");
-		center.add(lbFiltro, c);
 
 		c.ipadx = 10;
 		c.ipady = 2;
@@ -131,10 +129,10 @@ public class TableFrame extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnBajas) {
 
-			// int selectedRowIndex = tabla.getSelectedRow();
+			int selectedRowIndex = tabla.getSelectedRow();
 
 			if (tabla.getSelectedRow() != -1) {
-				array.remove(tabla.getSelectedRow());
+				array.remove(selectedRowIndex);
 				archivo.guardarArchivo(array);
 				actualizarTabla();
 			}
@@ -240,18 +238,108 @@ public class TableFrame extends JFrame implements ActionListener {
 					break;
 				// PAGINA WEB
 				case 3:
+					int contadorWeb = 0;
+					for (Registros registro : array) {
+						if (registro.getTipoCuenta().equals("Pagina Web")) {
+							contadorWeb++;
+						}
+					}
+					columnas = new String[] { "Tipo Cuenta", "Cuenta", "Usuario", "Correo", "Password", "URL" };
+					datos = new String[contadorWeb][columnas.length];
 
+					i = 0;
+					for (Registros web : array) {
+						if (web.getTipoCuenta().equals("Pagina Web")) {
+							datos[i][0] = web.getTipoCuenta();
+							datos[i][1] = web.getCuenta();
+							datos[i][2] = web.getUsuario();
+							datos[i][3] = web.getCorreo();
+							datos[i][4] = web.getPassword();
+							datos[i][5] = web.getUrl();
+							i++;
+						}
+					}
+
+					tablaDatos = new JTable(datos, columnas);
+					mostrarTabla = new JScrollPane(tablaDatos);
+
+					center.removeAll(); // Limpiar el contenedor antes de agregar la nueva tabla
+
+					menu();
+					c = formatoTabla();
+					center.add(mostrarTabla, c);
+					center.revalidate();
+					center.repaint();
 					break;
 				// APP MOVIL
 				case 4:
+					int contadorMovil = 0;
+					for (Registros registro : array) {
+						if (registro.getTipoCuenta().equals("App Movil")) {
+							contadorMovil++;
+						}
+					}
+					columnas = new String[] { "Tipo Cuenta", "Cuenta", "Usuario", "Correo", "Password", "URL" };
+					datos = new String[contadorMovil][columnas.length];
 
+					i = 0;
+					for (Registros movil : array) {
+						if (movil.getTipoCuenta().equals("App Movil")) {
+							datos[i][0] = movil.getTipoCuenta();
+							datos[i][1] = movil.getCuenta();
+							datos[i][2] = movil.getUsuario();
+							datos[i][3] = movil.getCorreo();
+							datos[i][4] = movil.getPassword();
+							datos[i][5] = movil.getUrl();
+							i++;
+						}
+					}
+
+					tablaDatos = new JTable(datos, columnas);
+					mostrarTabla = new JScrollPane(tablaDatos);
+
+					center.removeAll(); // Limpiar el contenedor antes de agregar la nueva tabla
+
+					menu();
+					c = formatoTabla();
+					center.add(mostrarTabla, c);
+					center.revalidate();
+					center.repaint();
 					break;
 				// APP DESKTOP
 				case 5:
+					int contadorDesktop = 0;
+					for (Registros registro : array) {
+						if (registro.getTipoCuenta().equals("App Desktop")) {
+							contadorDesktop++;
+						}
+					}
+					columnas = new String[] { "Tipo Cuenta", "Cuenta", "Usuario", "Correo", "Password", "URL" };
+					datos = new String[contadorDesktop][columnas.length];
 
-					break;
+					i = 0;
+					for (Registros desktop : array) {
+						if (desktop.getTipoCuenta().equals("App Desktop")) {
+							datos[i][0] = desktop.getTipoCuenta();
+							datos[i][1] = desktop.getCuenta();
+							datos[i][2] = desktop.getUsuario();
+							datos[i][3] = desktop.getCorreo();
+							datos[i][4] = desktop.getPassword();
+							datos[i][5] = desktop.getUrl();
+							i++;
+						}
+					}
 
-				default:
+					tablaDatos = new JTable(datos, columnas);
+					mostrarTabla = new JScrollPane(tablaDatos);
+
+					center.removeAll(); // Limpiar el contenedor antes de agregar la nueva tabla
+
+					menu();
+					c = formatoTabla();
+					center.add(mostrarTabla, c);
+					center.revalidate();
+					center.repaint();
 					break;
 			}
 
@@ -277,7 +365,7 @@ public class TableFrame extends JFrame implements ActionListener {
 
 	public void actualizarTabla() {
 		modeloConsultas.setRowCount(0); // Limpiar todos los datos de la tabla
-		cmbFiltro.getSelectedIndex();
+		// cmbFiltro.getSelectedIndex();
 
 		switch (cmbFiltro.getSelectedIndex()) {
 			case 1: // BANCARIA

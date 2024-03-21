@@ -418,13 +418,14 @@ public class MainFrame extends JFrame implements ActionListener, KeyListener {
 		// Validar datos del txtTarjeta
 		// Formato: (0000-0000-0000-0000)
 		if (e.getSource() == txtTarjeta) {
+			if (txtTarjeta.getText().length() > 18) {
+				e.consume();
+				return;
+			}
 			char c = e.getKeyChar();
 			if (Character.isDigit(c)) {
-				if (txtTarjeta.getText().length() % 5 == 4 && txtTarjeta.getText().length() <= 18) {
+				if (txtTarjeta.getText().length() % 5 == 4) {
 					txtTarjeta.setText(txtTarjeta.getText() + '-');
-				}
-				if (txtTarjeta.getText().length() > 18) {
-					e.consume();
 				}
 			} else {
 				e.consume();
